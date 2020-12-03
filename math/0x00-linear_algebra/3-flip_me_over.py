@@ -1,9 +1,15 @@
 #!/usr/bin/env python3
-"""how to create a function to transpose a matrix"""
+"""
+traspose matrix
+"""
 
 
 def matrix_transpose(matrix):
-    mat = [[]]
-    for i in matrix:
-        for j in matrix:
-            mat[i][j].append(matrix[i][j])
+    """
+    matrix de i j
+    matrix de j i
+    """
+    m = [[matrix[j][i] for j in range(len(matrix))]
+         for i in range(len(matrix[0]))]
+    while isinstance(matrix, list):
+        return m
