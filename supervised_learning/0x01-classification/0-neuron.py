@@ -4,7 +4,7 @@ import numpy as np
 
 
 class Neuron:
-    """Neuron W , b, A"""
+    """Create a Neuron class"""
     def __init__(self, nx):
         """create a constructor"""
         if type(nx) is not int:
