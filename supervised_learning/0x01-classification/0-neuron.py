@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """import numpy"""
+
+
 import numpy as np
 
 
