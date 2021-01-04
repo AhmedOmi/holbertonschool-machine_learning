@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """import numpy"""
 import numpy as np
-"""Create a Class Neuron Network"""
 
 
 class Neuron:
