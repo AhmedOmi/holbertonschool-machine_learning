@@ -11,5 +11,5 @@ class Neuron:
         if nx < 1:
             raise ValueError("nx must be a positive integer")
         self.W = np.random.rand(1, nx)
-        self.A = 0
         self.b = 0
+        self.A = 0
