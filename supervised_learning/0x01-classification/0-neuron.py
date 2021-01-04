@@ -6,6 +6,7 @@ import numpy as np
 
 class Neuron:
     def __init__(self, nx):
+        """create a constructor"""
         if type(nx) is not int:
             raise TypeError("nx must be an integer")
         if nx < 1:
