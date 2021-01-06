@@ -4,7 +4,8 @@ import numpy as np
 
 Neuron = __import__('1-neuron').Neuron
 
-lib_train = np.load('../data/Binary_Train.npz')
+lib_train = np.load(
+    '../../../../holberton_project/holbertonschool-machine_learning/supervised_learning/data/Binary_Train.npz')
 X_3D, Y = lib_train['X'], lib_train['Y']
 X = X_3D.reshape((X_3D.shape[0], -1)).T
 

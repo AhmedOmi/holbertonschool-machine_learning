@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-add a private Attribute
+update the Neural network with calculate the forward propagation
+and activation function
 """
 
 import numpy as np
@@ -30,4 +31,13 @@ class Neuron:
 
     @property
     def A(self):
+        return self.__A
+
+    def forward_prop(self, X):
+        """
+        forward propagation and activation function
+        update A
+        """
+        i = np.matmul(self.__W, X) + self.__b
+        self.__A = 1 / (1 + np.exp(-i))
         return self.__A

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-add class
+Create An artificial Neural Network
 """
 
 
@@ -8,7 +8,8 @@ import numpy as np
 
 
 class Neuron:
-    """neuron class"""
+    """Create a class Neuron with nx of inputs"""
+
     def __init__(self, nx):
         """constructor"""
         if not type(nx) is int:

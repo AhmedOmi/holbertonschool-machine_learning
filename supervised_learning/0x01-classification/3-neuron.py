@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-add a private Attribute
+add class
 """
 
 import numpy as np
@@ -31,3 +31,22 @@ class Neuron:
     @property
     def A(self):
         return self.__A
+
+    def forward_prop(self, X):
+        """
+        forward propagation
+        """
+        i = np.matmul(self.__W, X) + self.__b
+        self.__A = 1 / (1 + np.exp(-i))
+        return self.__A
+
+    def cost(self, Y, A):
+        """
+        cost function
+        :param Y:
+        :param A:
+        :return:
+        """
+        cost = - (np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)))
+        cost /= Y.shape[1]
+        return cost
