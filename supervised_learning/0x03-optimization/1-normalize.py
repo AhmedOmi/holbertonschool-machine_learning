@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+
+
+""" contains normalize funct"""
+
+
+def normalize(X, m, s):
+    """ Returns: The normalized X matrix"""
+    X -= m
+    X /= s
+    return X
