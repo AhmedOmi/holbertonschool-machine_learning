@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-""" Moving Average """
+"""Fix comment"""
 
 
-def moving_average(data, beta):
-    """ Moving Average """
-    V = [0]
-    W = []
-    for i in range(len(data)):
-        V.append((1 - beta) * data[i] + beta * V[i])
-        W.append(V[i+1] / (1 - beta ** (i+1)))
-    return W
+import tensorflow as tf
+shuffle_data = __import__('2-shuffle_data').shuffle_data
+
+
+def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32,
+                     epochs=5, load_path="/tmp/model.ckpt",
+                     save_path="/tmp/model.ckpt"):
+    """Fix errors and comment"""
+    return None
