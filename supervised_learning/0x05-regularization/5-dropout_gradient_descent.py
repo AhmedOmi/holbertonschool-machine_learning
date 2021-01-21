@@ -7,23 +7,23 @@ def dropout_gradient_descent(Y, weights, cache, alpha, keep_prob, L):
     """
     gradient descent
     """
-    m = Y.shape[1]
-    ZZ = cache["A"+str(L)] - Y
-    for i in range(L, 0, -1):
-        BB = "b"+str(i)
+    shap = Y.shape[1]
+    Z = cache["A" + str(L)] - Y
+    for count in range(L, 0, -1):
+        B = "b" + str(count)
 
-        WW = "W"+str(i)
-        AA = "A"+str(i-1)
+        W = "W" + str(count)
+        A = "A" + str(count - 1)
 
-        CA = cache[AA]
-        dw = ((1/m) * np.matmul(ZZ, CA.T))
-        db = (1/m) * np.sum(ZZ, axis=1, keepdims=True)
+        CA = cache[A]
+        dw = ((1 / shap) * np.matmul(Z, CA.T))
+        db = (1 / shap) * np.sum(Z, axis=1, keepdims=True)
 
-        zeb = 1 - np.power(CA, 2)
-        if i > 1:
-            ZZ = ZZ.T * zeb
-            ZZ = ZZ / keep_prob
+        zb = 1 - np.power(CA, 2)
+        if count > 1:
+            Z = Z.T * zb
+            Z = Z / keep_prob
         else:
-            ZZ = cache["A"+str(L)] - Y
-        weights[WW] = weights[WW] - dw * alpha
-        weights[BB] = weights[BB] - db * alpha
+            Z = cache["A" + str(L)] - Y
+        weights[W] = weights[W] - dw * alpha
+        weights[B] = weights[B] - db * alpha
