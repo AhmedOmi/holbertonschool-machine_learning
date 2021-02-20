@@ -1,27 +1,37 @@
 #!/usr/bin/env python3
-"""Train a keras model"""
-
-
+""" function to train model """
 import tensorflow.keras as K
 
 
-def train_model(network, data, labels, batch_size, epochs,
-                validation_data=None, early_stopping=False, patience=0,
-                learning_rate_decay=False, alpha=0.1, decay_rate=1,
+def train_model(network, data, labels,
+                batch_size, epochs,
+                validation_data=None,
+                early_stopping=False,
+                patience=0, learning_rate_decay=False,
+                alpha=0.1, decay_rate=1,
                 save_best=False, filepath=None,
-                verbose=True, shuffle=False):
-    """Train a keras model"""
-    callbacks = []
-    if early_stopping and validation_data:
-        callbacks.append(K.callbacks.EarlyStopping(patience=patience))
+                verbose=True,
+                shuffle=False):
+    def scheduler(epoch):
+        """function scheduler"""
+        return alpha / (1 + decay_rate * epoch)
+    x = []
+    if early_stopping is True:
+        p = K.callbacks.EarlyStopping(monitor='val_loss',
+                                          patience=patience)
+        x.append(p)
     if learning_rate_decay and validation_data:
-        def __schedule(epoch):
-            """Scale the learning rate based on epoch"""
-            return alpha * 1 / (epoch * decay_rate + 1)
-        callbacks.append(K.callbacks.LearningRateScheduler(__schedule, 1))
-    if save_best:
-        callbacks.append(K.callbacks.ModelCheckpoint(filepath))
-    return network.fit(data, labels, batch_size=batch_size, epochs=epochs,
-                       shuffle=shuffle, verbose=verbose,
-                       validation_data=validation_data,
-                       callbacks=callbacks)
+        p = K.callbacks.LearningRateScheduler(scheduler,
+                                                verbose=1)
+        x.append(p)
+    if save_best and validation_data:
+        a = K.callbacks.ModelCheckpoint(filepath, save_best_only=True)
+        x.append(a)
+    re = network.fit(x=data, y=labels,
+                          callbacks=x,
+                          epochs=epochs,
+                          batch_size=batch_size,
+                          validation_data=validation_data,
+                          verbose=verbose,
+                          shuffle=shuffle)
+    return re
