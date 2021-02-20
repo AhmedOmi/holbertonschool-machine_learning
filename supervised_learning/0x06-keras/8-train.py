@@ -12,6 +12,7 @@ def train_model(network, data, labels,
                 save_best=False, filepath=None,
                 verbose=True,
                 shuffle=False):
+    """function to train model with keras"""
     def scheduler(epoch):
         """function scheduler"""
         return alpha / (1 + decay_rate * epoch)
