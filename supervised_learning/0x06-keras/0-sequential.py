@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 import tensorflow.keras as tf
 
 
@@ -15,3 +16,4 @@ def build_model(nx, layers, activations, lambtha, keep_prob):
         model.add(K.layers.Dense(units=layers[i],
                                  activation=activations[i],
                                  kernel_regularizer=regularizer))
+    return model
