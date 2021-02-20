@@ -10,18 +10,18 @@ def train_model(network, data, labels, batch_size, epochs,
                 learning_rate_decay=False, alpha=0.1, decay_rate=1,
                 save_best=False, filepath=None,
                 verbose=True, shuffle=False):
-    """function to traine model"""
-    x = []
+    """Train a keras model"""
+    callbacks = []
     if early_stopping and validation_data:
-        x.append(K.callbacks.EarlyStopping(patience=patience))
+        callbacks.append(K.callbacks.EarlyStopping(patience=patience))
     if learning_rate_decay and validation_data:
         def __schedule(epoch):
             """Scale the learning rate based on epoch"""
             return alpha * 1 / (epoch * decay_rate + 1)
-        x.append(K.callbacks.LearningRateScheduler(__schedule, 1))
+        callbacks.append(K.callbacks.LearningRateScheduler(__schedule, 1))
     if save_best:
-        x.append(K.callbacks.ModelCheckpoint(filepath))
+        callbacks.append(K.callbacks.ModelCheckpoint(filepath))
     return network.fit(data, labels, batch_size=batch_size, epochs=epochs,
                        shuffle=shuffle, verbose=verbose,
                        validation_data=validation_data,
-                       callbacks=x)
+                       callbacks=callbacks)
