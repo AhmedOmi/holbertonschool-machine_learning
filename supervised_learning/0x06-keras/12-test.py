@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
+"""keras evalute model"""
 
-import tensorflow as tf
+
+import tensorflow.keras as K
 
 
-def build_model(nx, layers, activations, lambtha, keep_prob):
-    x = tf.keras.Sequential(
-        [
-            tf.keras.layers.Dense(nx, activations, lambtha, keep_prob)
-        ]
-    )
-    return x
+def test_model(network, data, labels, verbose=True):
+    """function to test and evaluate a model"""
+    return network.evaluate(data, labels, verbose=verbose)

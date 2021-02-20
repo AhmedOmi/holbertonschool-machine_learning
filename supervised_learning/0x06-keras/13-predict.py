@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
+"""keras perdict function"""
 
-import tensorflow as tf
+
+import tensorflow.keras as K
 
 
-def build_model(nx, layers, activations, lambtha, keep_prob):
-    x = tf.keras.Sequential(
-        [
-            tf.keras.layers.Dense(nx, activations, lambtha, keep_prob)
-        ]
-    )
-    return x
+def predict(network, data, verbose=False):
+    """predict function"""
+    return network.predict(data, verbose=verbose)
