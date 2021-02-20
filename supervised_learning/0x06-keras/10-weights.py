@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
+"""Save and load  a model weights"""
 
-import tensorflow as tf
+
+import tensorflow.keras as K
 
 
-def build_model(nx, layers, activations, lambtha, keep_prob):
-    x = tf.keras.Sequential(
-        [
-            tf.keras.layers.Dense(nx, activations, lambtha, keep_prob)
-        ]
-    )
-    return x
+def save_weights(network, filename, format='h5'):
+    """save weights"""
+    network.save_weights(filename, format)
+
+
+def load_weights(network, filename):
+    """load weights"""
+    return network.load_weights(filename)

@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
+"""Save and load a model with keras"""
 
-import tensorflow as tf
+
+import tensorflow.keras as K
 
 
-def build_model(nx, layers, activations, lambtha, keep_prob):
-    x = tf.keras.Sequential(
-        [
-            tf.keras.layers.Dense(nx, activations, lambtha, keep_prob)
-        ]
-    )
-    return x
+def save_model(network, filename):
+    """save model Network to filename"""
+    network.save(filename)
+
+
+def load_model(filename):
+    """load model with keras"""
+    return K.models.load_model(filename)

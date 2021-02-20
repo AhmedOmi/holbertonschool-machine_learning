@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
+"""onverts a label vector into a one-hot matrix"""
 
-import tensorflow as tf
+
+import tensorflow.keras as K
 
 
-def build_model(nx, layers, activations, lambtha, keep_prob):
-    x = tf.keras.Sequential(
-        [
-            tf.keras.layers.Dense(nx, activations, lambtha, keep_prob)
-        ]
-    )
-    return x
+def one_hot(Y, classes=None):
+    """function one hot"""
+    if classes is None:
+        classes = max(Y) + 1
+    return K.utils.to_categorical(Y, classes)
