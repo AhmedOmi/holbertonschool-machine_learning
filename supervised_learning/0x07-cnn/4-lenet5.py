@@ -1,40 +1,47 @@
 #!/usr/bin/env python3
-""" LeNet-5 (Tensorflow) """
+"""
+function lent5 import tensorflow
+"""
+
 import tensorflow as tf
 
 
 def lenet5(x, y):
-    """ builds a modified version of the LeNet-5 architecture using tensorflow """
-    he_normal = tf.contrib.layers.variance_scaling_initializer()
-    relu = tf.nn.relu
-    conv_lay1 = tf.layers.Conv2D(filters=6,
-                                 kernel_size=(5, 5),
-                                 padding='same',
-                                 activation=relu,
-                                 kernel_initializer=he_normal)(x)
-    pool_lay1 = tf.layers.MaxPooling2D(pool_size=(2, 2),
-                                       strides=(2, 2))(conv_lay1)
-    conv_lay2 = tf.layers.Conv2D(filters=16,
-                                 kernel_size=(5, 5),
-                                 padding='valid',
-                                 activation=relu,
-                                 kernel_initializer=he_normal)(pool_lay1)
-    pool_lay2 = tf.layers.MaxPooling2D(pool_size=(2, 2),
-                                       strides=(2, 2))(conv_lay2)
-    flatten = tf.layers.Flatten()(pool_lay2)
-    full_lay3 = tf.layers.Dense(units=120,
-                                activation=relu,
-                                kernel_initializer=he_normal)(flatten)
-    full_lay4 = tf.layers.Dense(units=84,
-                                kernel_initializer=he_normal)(full_lay3)
-    softmax = tf.layers.Dense(units=10,
-                              kernel_initializer=he_normal)(full_lay4)
-    loss = tf.losses.softmax_cross_entropy(y, logits=softmax)
-    y_max = tf.argmax(y, axis=1)
-    y_pred_max = tf.argmax(activated_sof, axis=1)
-    bias = tf.cast(tf.equal(y_max, y_pred_max), dtype=tf.float32)
-    accuracy = tf.reduce_mean(bias)
-    train = tf.train.AdamOptimizer().minimize(loss)
-    activated_sof = tf.nn.softmax(softmax)
+    """
+    Function that builds a modified version of the LeNet-5 architecture using
+    """
+    init_ = tf.contrib.layers.variance_scaling_initializer()
+    cv_lyr1 = tf.layers.Conv2D(filters=6,
+                               kernel_size=(5, 5),
+                               padding='same',
+                               kernel_initializer=init_,
+                               activation=tf.nn.relu)(x)
+    pool_lyr_2 = tf.layers.MaxPooling2D(pool_size=(2, 2),
+                                        strides=(2, 2))(cv_lyr1)
+    cv_lyr3 = tf.layers.Conv2D(filters=16,
+                               kernel_size=(5, 5),
+                               padding='valid',
+                               kernel_initializer=init_,
+                               activation=tf.nn.relu)(pool_lyr_2)
+    pool_lyr_4 = tf.layers.MaxPooling2D(pool_size=(2, 2),
+                                        strides=(2, 2))(cv_lyr3)
+    flatten5 = tf.layers.Flatten()(pool_lyr_4)
+    fc_lyr_5 = tf.contrib.layers.fully_connected(inputs=flatten5,
+                                                 num_outputs=120,
+                                                 activation_fn=tf.nn.relu,
+                                                 weights_initializer=init_)
+    fc_lyr_6 = tf.contrib.layers.fully_connected(inputs=fc_lyr_5,
+                                                 num_outputs=84,
+                                                 activation_fn=tf.nn.relu,
+                                                 weights_initializer=init_)
+    sfmx_ = tf.contrib.layers.fully_connected(inputs=fc_lyr_6,
+                                              num_outputs=10,
+                                              activation_fn=None,
+                                              weights_initializer=init_)
+    sfmx_lyr = tf.nn.softmax(sfmx_)
+    losses = tf.losses.softmax_cross_entropy(onehot_labels=y, logits=sfmx_)
+    predictions = tf.equal(tf.argmax(sfmx_lyr, 1), tf.argmax(y, 1))
+    accuracy = tf.reduce_mean(tf.cast(predictions, tf.float32))
+    train_operation = tf.train.AdamOptimizer().minimize(losses)
 
-    return activated_sof, train, loss, accuracy
+    return (sfmx_lyr, train_operation, losses, accuracy)
