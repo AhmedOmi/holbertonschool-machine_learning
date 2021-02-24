@@ -1,33 +1,37 @@
 #!/usr/bin/env python3
-"""Convlutional forward propagation, manually"""
-
+""" Convolutional Forward Prop """
 import numpy as np
 
 
-def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
-    """Convlutional forward propagation, manually"""
-    if padding == "valid":
-        i = A_prev
+def conv_forward(A_prev, W, b, activation,
+                 padding="same", stride=(1, 1)):
+    """ forward prop function"""
+    m, h_prev, w_prev, c_prev = A_prev.shape
+    kh, kw, c_prev, c_new = W.shape
+    sh, sw = stride
+
+    if padding == 'same':
+        pad_h = int(((h_prev * (sh - 1)) - sh + kh) / 2)
+        pad_w = int(((w_prev * (sw - 1)) - sw + kw) / 2)
+    elif type(padding) == tuple:
+        pad_h, pad_w = padding
     else:
-        xp = int(W.shape[1] / 2)
-        yp = int(W.shape[0] / 2)
-        i = np.pad(A_prev, ((0, 0), (yp - 1 + W.shape[1] % 2, yp),
-                            (xp - 1 + W.shape[1] % 2, xp), (0, 0)), 'constant')
-    bottom = i.shape[1] - W.shape[0] + 1
-    right = i.shape[2] - W.shape[1] + 1
-    o = np.ndarray((i.shape[0], int((bottom - 1) / stride[0] + 1),
-                    int((right - 1) / stride[1] + 1), W.shape[3]))
-    y_in = 0
-    y_out = 0
-    while y_in < bottom:
-        x_in = 0
-        x_out = 0
-        while x_in < right:
-            m = W[np.newaxis, ...] * i[:, y_in:y_in + W.shape[
-                0], x_in:x_in + W.shape[1], :, np.newaxis]
-            o[:, y_out, x_out] = activation(m.sum(axis=(1, 2, 3)) + b)
-            x_in += stride[1]
-            x_out += 1
-        y_in += stride[0]
-        y_out += 1
-    return o
+        pad_h = 0
+        pad_w = 0
+    img_pad = np.pad(A_prev, ((0, 0), (pad_h, pad_h),
+                              (pad_w, pad_w), (0, 0)),
+                     'constant', constant_values=(0))
+    img_pad_h = img_pad.shape[1]
+    img_pad_w = img_pad.shape[2]
+    h_out = int((img_pad_h - kh) / sh) + 1
+    w_out = int((img_pad_w - kw) / sw) + 1
+    result = np.zeros((m, h_out, w_out, c_new))
+    for i in range(h_out):
+        for j in range(w_out):
+            for k in range(c_new):
+                result[:, i, j, k] = np.sum(img_pad[:,
+                                                    i * sh: i * sh + kh,
+                                                    j * sw: j * sw + kw] *
+                                            W[:, :, :, k],
+                                            axis=(1, 2, 3))
+    return activation(result + b)
