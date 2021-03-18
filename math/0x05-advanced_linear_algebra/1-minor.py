@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-function that calculates the determinant of a matrix
+function that calculates the minor of a matrix
 """
 
 

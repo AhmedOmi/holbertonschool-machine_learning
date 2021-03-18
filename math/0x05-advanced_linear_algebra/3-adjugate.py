@@ -1,7 +1,21 @@
 #!/usr/bin/env python3
 """
-function that calculates the cofactor of a matrix
+function that calculates the adjugate and traspose of a matrix
 """
+
+
+def adjugate(matrix):
+    """
+    calculates the adjugate of given matrix
+    """
+    return transpose_matrix(cofactor(matrix))
+
+
+def transpose_matrix(matrix):
+    """
+    transpose given matrix
+    """
+    return [[row[m] for row in matrix] for m in range(len(matrix[0]))]
 
 
 def cofactor(matrix):
@@ -23,11 +37,11 @@ def cofactor(matrix):
         newMatrix = []
         for col in range(len(matrix[row])):
             sub_minr = [[matrix[i][j] for j in range(len(matrix))
-                        if (j != col and i != row)]
+                         if (j != col and i != row)]
                         for i in range(len(matrix))]
             sub_minr = [i for i in sub_minr if len(i) == len(matrix) - 1]
 
-            newMatrix.append((-1)**(row + col) * determinant(sub_minr))
+            newMatrix.append((-1) ** (row + col) * determinant(sub_minr))
 
         cfMatrix.append(newMatrix)
     return cfMatrix
