@@ -1,5 +1,5 @@
 # 0x00. Dimensionality Reduction
-##Learning Objectives
+## Learning Objectives
 - What is eigendecomposition?
 - What is singular value decomposition?
 - What is the difference between eig and svd?
