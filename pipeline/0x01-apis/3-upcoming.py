@@ -5,41 +5,30 @@ from datetime import datetime
 
 
 if __name__ == '__main__':
-    base_url = "https://api.spacexdata.com/v4"
+    url = "https://api.spacexdata.com/v4/launches/upcoming"
+    req1 = requests.get(url)
+    data = req1.json()
+    data.sort(key=lambda json: json['date_unix'])
+    data = data[0]
 
-    response = requests.get(base_url + "/launches/upcoming")
-    content = response.json()
-    upcoming_launch = tuple()
+    v_name = data["name"]
 
-    for launch in content:
-        launch_name = launch['name']
-        launch_date = launch['date_unix']
-        rocket_id = launch['rocket']
-        lauchpad_id = launch['launchpad']
-        if len(upcoming_launch) == 0 or launch_date < upcoming_launch[0]:
-            upcoming_launch = (
-                launch_date,
-                launch_name,
-                rocket_id,
-                lauchpad_id,
-            )
+    v_localtime = data["date_local"]
 
-    launch_name = upcoming_launch[1]
-    launch_date = datetime.fromtimestamp(upcoming_launch[0]).isoformat()
+    # <rocket name>
+    rock_url = "https://api.spacexdata.com/v4/rockets/" + data["rocket"]
+    req3 = requests.get(rock_url)
+    rock_data = req3.json()
+    v_rock_name = rock_data['name']
 
-    response = requests.get(base_url + "/rockets/" + upcoming_launch[2])
-    rocket_name = response.json()['name']
+    # <launchpad name> (<launchpad locality>)
+    launchpad_url = "https://api.spacexdata.com/v4/launchpads/" +\
+        data["launchpad"]
+    req2 = requests.get(launchpad_url)
+    launch_data = req2.json()
+    v_launch_name = launch_data['name']
+    v_lauch_local = launch_data['locality']
 
-    response = requests.get(base_url + "/launchpads/" + upcoming_launch[3])
-    launchpad_name = response.json()['name']
-    launchpad_loc = response.json()['locality']
-
-    print(
-        "{} ({}) {} - {} ({})".format(
-            launch_name,
-            launch_date,
-            rocket_name,
-            launchpad_name,
-            launchpad_loc
-        )
-    )
+    print("{} ({}) {} - {} ({})".format(v_name, v_localtime,
+                                        v_rock_name, v_launch_name,
+                                        v_lauch_local))
