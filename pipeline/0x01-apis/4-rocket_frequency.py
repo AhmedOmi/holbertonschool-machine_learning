@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """API module"""
 import requests
-from datetime import datetime
 
 
 if __name__ == '__main__':
